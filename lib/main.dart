@@ -7,12 +7,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const String appTitle = 'Flutter layout demo';
-    // Tambahkan ImageSection di sini (misalnya: dengan placeholder untuk gambar)
-    // Untuk menjalankan kode ini, Anda perlu memiliki aset gambar di path yang ditentukan
-    const ImageSection mountainImage = ImageSection(
-      image: 'images/lake.jpg', // Ganti dengan path gambar Anda yang benar
-    );
+    const String appTitle = 'Travelwithmera';
 
     return MaterialApp(
       title: appTitle,
@@ -21,22 +16,21 @@ class MyApp extends StatelessWidget {
         body: const SingleChildScrollView(
           child: Column(
             children: [
-              // ImageSection perlu ditambahkan di sini jika Anda ingin menampilkannya
-              // mountainImage, 
+              // Tambahkan ImageSection di sini
+              ImageSection(image: 'assets/merbabu.jpeg'),
+              
               TitleSection(
                 name: 'Gunung Merbabu',
-                location: 'Kandersteg, Switzerland', // Lokasi ini mungkin perlu disesuaikan dengan Merbabu
+                location: 'Jawa Tengah, Indonesia', 
               ),
               ButtonSection(),
               TextSection(
                 description:
-                    "Lake Oeschinen lies at the foot of the Blüemlisalp in the "
-                    "Bernese Alps. Situated 1,578 meters above sea level, it "
-                    "is one of the larger Alpine Lakes. A gondola ride from "
-                    "Kandersteg, followed by a half-hour walk through pastures "
-                    "and pine forest, leads you to the lake, which warms to 20 "
-                    "degrees Celsius in the summer. Activities enjoyed here include "
-                    "rowing, and riding the summer toboggan run.",
+                    "Gunung Merbabu merupakan sebuah gunung berapi strato yang sudah tidak aktif di Provinsi Jawa Tengah, Indonesia "
+                    "dengan ketinggian mencapai sekitar 3.145 meter di atas permukaan laut. "
+                    "Gunung ini berfungsi sebagai Taman Nasional Gunung Merbabu, yang melintasi wilayah administrasi Kabupaten Boyolali, Magelang, dan Semarang. "
+                    "Merbabu sangat terkenal di kalangan pendaki karena menawarkan pemandangan alam yang spektakuler, "
+                    "terutama dari puncak-puncak utamanya seperti Kenteng Songo dan Syarif, yang menampilkan savana yang luas dan terbuka.",
               ),
             ],
           ),
@@ -60,11 +54,9 @@ class TitleSection extends StatelessWidget {
       child: Row(
         children: [
           Expanded(
-            /*1*/
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                /*2*/
                 Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Text(
@@ -76,7 +68,6 @@ class TitleSection extends StatelessWidget {
               ],
             ),
           ),
-          /*3*/
           Icon(Icons.star, color: Colors.red[500]),
           const Text('41'),
         ],
@@ -163,7 +154,6 @@ class ImageSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Pastikan path gambar 'image' valid di dalam folder 'assets'
     return Image.asset(image, width: 600, height: 240, fit: BoxFit.cover);
   }
 }
