@@ -1,80 +1,159 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    const String appTitle = 'Travelwithmera';
+
     return MaterialApp(
-      title: 'Tugas Intern M2 - Week 002',
-      theme: ThemeData(primarySwatch: Colors.red),
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page - Tugas M2'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Menu Tugas'),
-            ),
-            ListTile(
-              title: Text('Home'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              title: Text('Login'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Selamat Datang di Home!',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Aksi tombol
-              },
-              child: Text('Klik Tombol Navigasi'),
-            ),
-          ],
+      title: appTitle,
+      home: Scaffold(
+        appBar: AppBar(title: const Text(appTitle)),
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              // Tambahkan ImageSection di sini
+              ImageSection(image: 'assets/merbabu.jpeg'),
+              
+              TitleSection(
+                name: 'Gunung Merbabu',
+                location: 'Jawa Tengah, Indonesia', 
+              ),
+              ButtonSection(),
+              TextSection(
+                description:
+                    "Gunung Merbabu merupakan sebuah gunung berapi strato yang sudah tidak aktif di Provinsi Jawa Tengah, Indonesia "
+                    "dengan ketinggian mencapai sekitar 3.145 meter di atas permukaan laut. "
+                    "Gunung ini berfungsi sebagai Taman Nasional Gunung Merbabu, yang melintasi wilayah administrasi Kabupaten Boyolali, Magelang, dan Semarang. "
+                    "Merbabu sangat terkenal di kalangan pendaki karena menawarkan pemandangan alam yang spektakuler, "
+                    "terutama dari puncak-puncak utamanya seperti Kenteng Songo dan Syarif, yang menampilkan savana yang luas dan terbuka.",
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class LoginScreen extends StatelessWidget {
+// --- TitleSection ---
+class TitleSection extends StatelessWidget {
+  const TitleSection({super.key, required this.name, required this.location});
+
+  final String name;
+  final String location;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Login')),
-      body: Center(child: Text('Halaman Login dari Week 001')),
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(location, style: TextStyle(color: Colors.grey[500])),
+              ],
+            ),
+          ),
+          Icon(Icons.star, color: Colors.red[500]),
+          const Text('41'),
+        ],
+      ),
     );
+  }
+}
+
+// --- ButtonSection dan ButtonWithText ---
+class ButtonSection extends StatelessWidget {
+  const ButtonSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = Theme.of(context).primaryColor;
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ButtonWithText(color: color, icon: Icons.call, label: 'CALL'),
+          ButtonWithText(color: color, icon: Icons.near_me, label: 'ROUTE'),
+          ButtonWithText(color: color, icon: Icons.share, label: 'SHARE'),
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonWithText extends StatelessWidget {
+  const ButtonWithText({
+    super.key,
+    required this.color,
+    required this.icon,
+    required this.label,
+  });
+
+  final Color color;
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// --- TextSection ---
+class TextSection extends StatelessWidget {
+  const TextSection({super.key, required this.description});
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Text(description, softWrap: true),
+    );
+  }
+}
+
+// --- ImageSection ---
+class ImageSection extends StatelessWidget {
+  const ImageSection({super.key, required this.image});
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    return Image.asset(image, width: 600, height: 240, fit: BoxFit.cover);
   }
 }
