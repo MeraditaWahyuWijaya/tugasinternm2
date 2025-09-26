@@ -1,80 +1,169 @@
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MyApp());
-}
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
+    const String appTitle = 'Flutter layout demo';
+    // Tambahkan ImageSection di sini (misalnya: dengan placeholder untuk gambar)
+    // Untuk menjalankan kode ini, Anda perlu memiliki aset gambar di path yang ditentukan
+    const ImageSection mountainImage = ImageSection(
+      image: 'images/lake.jpg', // Ganti dengan path gambar Anda yang benar
+    );
+
     return MaterialApp(
-      title: 'Tugas Intern M2 - Week 002',
-      theme: ThemeData(primarySwatch: Colors.red),
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page - Tugas M2'),
-      ),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Text('Menu Tugas'),
-            ),
-            ListTile(
-              title: Text('Home'),
-              onTap: () => Navigator.pop(context),
-            ),
-            ListTile(
-              title: Text('Login'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginScreen()),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Selamat Datang di Halaman Home!',// Mera menambahkan kata selamat datang pada halaman home
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Aksi tombol
-              },
-              child: Text('Klik Tombol Navigasi'),
-            ),
-          ],
+      title: appTitle,
+      home: Scaffold(
+        appBar: AppBar(title: const Text(appTitle)),
+        body: const SingleChildScrollView(
+          child: Column(
+            children: [
+              // ImageSection perlu ditambahkan di sini jika Anda ingin menampilkannya
+              // mountainImage, 
+              TitleSection(
+                name: 'Gunung Merbabu',
+                location: 'Kandersteg, Switzerland', // Lokasi ini mungkin perlu disesuaikan dengan Merbabu
+              ),
+              ButtonSection(),
+              TextSection(
+                description:
+                    "Lake Oeschinen lies at the foot of the Blüemlisalp in the "
+                    "Bernese Alps. Situated 1,578 meters above sea level, it "
+                    "is one of the larger Alpine Lakes. A gondola ride from "
+                    "Kandersteg, followed by a half-hour walk through pastures "
+                    "and pine forest, leads you to the lake, which warms to 20 "
+                    "degrees Celsius in the summer. Activities enjoyed here include "
+                    "rowing, and riding the summer toboggan run.",
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-class LoginScreen extends StatelessWidget {
+// --- TitleSection ---
+class TitleSection extends StatelessWidget {
+  const TitleSection({super.key, required this.name, required this.location});
+
+  final String name;
+  final String location;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text('Login')),
-      body: Center(child: Text('Halaman Login dari Week 001')),
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Row(
+        children: [
+          Expanded(
+            /*1*/
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                /*2*/
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 8),
+                  child: Text(
+                    name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(location, style: TextStyle(color: Colors.grey[500])),
+              ],
+            ),
+          ),
+          /*3*/
+          Icon(Icons.star, color: Colors.red[500]),
+          const Text('41'),
+        ],
+      ),
     );
+  }
+}
+
+// --- ButtonSection dan ButtonWithText ---
+class ButtonSection extends StatelessWidget {
+  const ButtonSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final Color color = Theme.of(context).primaryColor;
+    return SizedBox(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          ButtonWithText(color: color, icon: Icons.call, label: 'CALL'),
+          ButtonWithText(color: color, icon: Icons.near_me, label: 'ROUTE'),
+          ButtonWithText(color: color, icon: Icons.share, label: 'SHARE'),
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonWithText extends StatelessWidget {
+  const ButtonWithText({
+    super.key,
+    required this.color,
+    required this.icon,
+    required this.label,
+  });
+
+  final Color color;
+  final IconData icon;
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(icon, color: color),
+        Padding(
+          padding: const EdgeInsets.only(top: 8),
+          child: Text(
+            label,
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w400,
+              color: color,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// --- TextSection ---
+class TextSection extends StatelessWidget {
+  const TextSection({super.key, required this.description});
+
+  final String description;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Text(description, softWrap: true),
+    );
+  }
+}
+
+// --- ImageSection ---
+class ImageSection extends StatelessWidget {
+  const ImageSection({super.key, required this.image});
+
+  final String image;
+
+  @override
+  Widget build(BuildContext context) {
+    // Pastikan path gambar 'image' valid di dalam folder 'assets'
+    return Image.asset(image, width: 600, height: 240, fit: BoxFit.cover);
   }
 }
